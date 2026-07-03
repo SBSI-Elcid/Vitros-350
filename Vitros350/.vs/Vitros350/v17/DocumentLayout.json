@@ -7,8 +7,24 @@
       "RelativeMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|solutionrelative:frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|d:\\drivers\\vitros 350\\vitros350\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|D:\\Drivers\\Vitros 350\\Vitros350\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|solutionrelative:frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|d:\\drivers\\vitros 350\\vitros350\\classes\\orderinfoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|solutionrelative:classes\\orderinfoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|d:\\drivers\\vitros 350\\vitros350\\classes\\resultconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|solutionrelative:classes\\resultconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|d:\\drivers\\vitros 350\\vitros350\\classes\\userconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|solutionrelative:classes\\userconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|d:\\drivers\\vitros 350\\vitros350\\classes\\patientinfoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C79FD2AA-3155-4F6D-B72E-DC1CD9988997}|Vitros350.csproj|solutionrelative:classes\\patientinfoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,8 +34,73 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ResultConfiguration.cs",
+              "DocumentMoniker": "D:\\Drivers\\Vitros 350\\Vitros350\\Classes\\ResultConfiguration.cs",
+              "RelativeDocumentMoniker": "Classes\\ResultConfiguration.cs",
+              "ToolTip": "D:\\Drivers\\Vitros 350\\Vitros350\\Classes\\ResultConfiguration.cs",
+              "RelativeToolTip": "Classes\\ResultConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-03T08:37:24.063Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserConfiguration.cs",
+              "DocumentMoniker": "D:\\Drivers\\Vitros 350\\Vitros350\\Classes\\UserConfiguration.cs",
+              "RelativeDocumentMoniker": "Classes\\UserConfiguration.cs",
+              "ToolTip": "D:\\Drivers\\Vitros 350\\Vitros350\\Classes\\UserConfiguration.cs",
+              "RelativeToolTip": "Classes\\UserConfiguration.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAB8AAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-03T07:47:52.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OrderInfoConfiguration.cs",
+              "DocumentMoniker": "D:\\Drivers\\Vitros 350\\Vitros350\\Classes\\OrderInfoConfiguration.cs",
+              "RelativeDocumentMoniker": "Classes\\OrderInfoConfiguration.cs",
+              "ToolTip": "D:\\Drivers\\Vitros 350\\Vitros350\\Classes\\OrderInfoConfiguration.cs",
+              "RelativeToolTip": "Classes\\OrderInfoConfiguration.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAlwBMAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-03T06:55:27.377Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PatientInfoConfiguration.cs",
+              "DocumentMoniker": "D:\\Drivers\\Vitros 350\\Vitros350\\Classes\\PatientInfoConfiguration.cs",
+              "RelativeDocumentMoniker": "Classes\\PatientInfoConfiguration.cs",
+              "ToolTip": "D:\\Drivers\\Vitros 350\\Vitros350\\Classes\\PatientInfoConfiguration.cs",
+              "RelativeToolTip": "Classes\\PatientInfoConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-03T02:26:10.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "frmMain.cs",
+              "DocumentMoniker": "D:\\Drivers\\Vitros 350\\Vitros350\\frmMain.cs",
+              "RelativeDocumentMoniker": "frmMain.cs",
+              "ToolTip": "D:\\Drivers\\Vitros 350\\Vitros350\\frmMain.cs",
+              "RelativeToolTip": "frmMain.cs",
+              "ViewState": "AgIAAO0BAAAAAAAAAAAkwAcCAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-30T09:13:14.824Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -31,19 +112,6 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-02T07:10:33.476Z",
               "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "frmMain.cs",
-              "DocumentMoniker": "D:\\Drivers\\Vitros 350\\Vitros350\\frmMain.cs",
-              "RelativeDocumentMoniker": "frmMain.cs",
-              "ToolTip": "D:\\Drivers\\Vitros 350\\Vitros350\\frmMain.cs",
-              "RelativeToolTip": "frmMain.cs",
-              "ViewState": "AgIAAIoAAAAAAAAAAAAcwJIAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-30T09:13:14.824Z",
-              "EditorCaption": ""
             }
           ]
         }

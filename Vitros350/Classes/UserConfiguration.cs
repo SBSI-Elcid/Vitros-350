@@ -29,6 +29,14 @@ namespace Vitros350.Classes
             public string DatabasePort { get; set; }
             public string DatabaseName { get; set; }
 
+            public string DatabaseConnectionString
+            {
+                get
+                {
+                    return $"Server={DatabaseServer};Port={DatabasePort};Database={DatabaseName};Uid={Username};Pwd={Password};";
+                }
+            }
+
             //Machine settings
             public string MachineName { get; set; }
             public string MachinePort { get; set; }

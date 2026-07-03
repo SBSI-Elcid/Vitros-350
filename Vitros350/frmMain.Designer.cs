@@ -38,6 +38,8 @@
             this.txtServerIp = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cboComPort = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.txtMachineLocation = new System.Windows.Forms.TextBox();
             this.txtMachineSection = new System.Windows.Forms.TextBox();
             this.txtMachineSerialNo = new System.Windows.Forms.TextBox();
@@ -63,6 +65,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.tabControlLog = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.rTextLogs = new System.Windows.Forms.RichTextBox();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -71,8 +74,6 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.label8 = new System.Windows.Forms.Label();
-            this.cboComPort = new System.Windows.Forms.ComboBox();
             this.tabControlSettings.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -82,6 +83,7 @@
             this.tabPage3.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControlLog.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControlSettings
@@ -191,6 +193,24 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Machine Settings";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // cboComPort
+            // 
+            this.cboComPort.FormattingEnabled = true;
+            this.cboComPort.Location = new System.Drawing.Point(139, 41);
+            this.cboComPort.Name = "cboComPort";
+            this.cboComPort.Size = new System.Drawing.Size(249, 27);
+            this.cboComPort.TabIndex = 23;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Arial", 10F);
+            this.label8.Location = new System.Drawing.Point(6, 46);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(94, 16);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Machine Port:";
             // 
             // txtMachineLocation
             // 
@@ -426,6 +446,7 @@
             // tabPage4
             // 
             this.tabPage4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPage4.Controls.Add(this.rTextLogs);
             this.tabPage4.Location = new System.Drawing.Point(4, 31);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -433,6 +454,16 @@
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "Communication Log";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // rTextLogs
+            // 
+            this.rTextLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rTextLogs.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rTextLogs.Location = new System.Drawing.Point(3, 3);
+            this.rTextLogs.Name = "rTextLogs";
+            this.rTextLogs.Size = new System.Drawing.Size(812, 268);
+            this.rTextLogs.TabIndex = 0;
+            this.rTextLogs.Text = "";
             // 
             // lblVersion
             // 
@@ -462,6 +493,7 @@
             this.btnConnect.TabIndex = 6;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // btnDisconnect
             // 
@@ -480,6 +512,7 @@
             this.btnClearLog.TabIndex = 8;
             this.btnClearLog.Text = "Clear Logs";
             this.btnClearLog.UseVisualStyleBackColor = true;
+            this.btnClearLog.Click += new System.EventHandler(this.btnClearLog_Click);
             // 
             // btnEdit
             // 
@@ -504,24 +537,6 @@
             // 
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Arial", 10F);
-            this.label8.Location = new System.Drawing.Point(6, 46);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(94, 16);
-            this.label8.TabIndex = 22;
-            this.label8.Text = "Machine Port:";
-            // 
-            // cboComPort
-            // 
-            this.cboComPort.FormattingEnabled = true;
-            this.cboComPort.Location = new System.Drawing.Point(139, 41);
-            this.cboComPort.Name = "cboComPort";
-            this.cboComPort.Size = new System.Drawing.Size(249, 27);
-            this.cboComPort.TabIndex = 23;
             // 
             // frmMain
             // 
@@ -556,6 +571,7 @@
             this.tabPage3.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.tabControlLog.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -607,6 +623,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cboComPort;
+        private System.Windows.Forms.RichTextBox rTextLogs;
     }
 }
 
