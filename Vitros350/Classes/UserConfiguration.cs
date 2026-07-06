@@ -43,6 +43,8 @@ namespace Vitros350.Classes
             public string SerialNumber { get; set; }
             public string MachineSection { get; set; }
             public string MachineLocation { get; set; }
+
+            public bool EnableTwoWayProcess { get; set; }
         }
 
 
@@ -97,7 +99,11 @@ namespace Vitros350.Classes
                     MachinePort = configDetails.MachinePort,
                     SerialNumber = configDetails.SerialNumber,
                     MachineSection = configDetails.MachineSection,
-                    MachineLocation = configDetails.MachineLocation
+                    MachineLocation = configDetails.MachineLocation,
+
+                    EnableTwoWayProcess = configDetails.EnableTwoWayProcess
+
+                    
                 };
 
                 try

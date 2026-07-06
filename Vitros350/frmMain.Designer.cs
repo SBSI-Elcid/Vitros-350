@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.tabControlSettings = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.chkLisPro = new System.Windows.Forms.CheckBox();
             this.chkEnableTwoWayProcess = new System.Windows.Forms.CheckBox();
             this.txtServerPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -103,7 +102,6 @@
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tabPage1.Controls.Add(this.chkLisPro);
             this.tabPage1.Controls.Add(this.chkEnableTwoWayProcess);
             this.tabPage1.Controls.Add(this.txtServerPort);
             this.tabPage1.Controls.Add(this.label2);
@@ -117,20 +115,10 @@
             this.tabPage1.Text = "Server Settings";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // chkLisPro
-            // 
-            this.chkLisPro.AutoSize = true;
-            this.chkLisPro.Font = new System.Drawing.Font("Arial", 10F);
-            this.chkLisPro.Location = new System.Drawing.Point(136, 128);
-            this.chkLisPro.Name = "chkLisPro";
-            this.chkLisPro.Size = new System.Drawing.Size(72, 20);
-            this.chkLisPro.TabIndex = 6;
-            this.chkLisPro.Text = "LIS Pro";
-            this.chkLisPro.UseVisualStyleBackColor = true;
-            // 
             // chkEnableTwoWayProcess
             // 
             this.chkEnableTwoWayProcess.AutoSize = true;
+            this.chkEnableTwoWayProcess.Enabled = false;
             this.chkEnableTwoWayProcess.Font = new System.Drawing.Font("Arial", 10F);
             this.chkEnableTwoWayProcess.Location = new System.Drawing.Point(136, 99);
             this.chkEnableTwoWayProcess.Name = "chkEnableTwoWayProcess";
@@ -593,7 +581,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtServerPort;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox chkLisPro;
         private System.Windows.Forms.CheckBox chkEnableTwoWayProcess;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;

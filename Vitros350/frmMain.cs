@@ -24,10 +24,16 @@ namespace Vitros350
     {
         private string ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "userconfiguration.json");
 
-  
 
+        private UserConfiguration.UserConfig config = new UserConfiguration.UserConfig();
         private UserConfiguration userConfig = new UserConfiguration();
-        private UserConfiguration.UserConfig config = new UserConfiguration.UserConfig();   
+        private SerialPort _serialPort = new SerialPort();
+        private List<byte> _incomingBuffer = new List<byte>();
+        private List<string> _currentSessionFrames = new List<string>();
+
+        PatientInfoConfiguration PatientInfo = new PatientInfoConfiguration();
+        List<OrderInfoConfiguration> OrderInfo = new List<OrderInfoConfiguration>();
+
 
         public frmMain()
         {
@@ -35,57 +41,15 @@ namespace Vitros350
 
             lblVersion.Text = $"Version {FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion}";
 
-            string iconPath = Path.Combine(Application.StartupPath,"Icons", "Vitros350.ico");
+            string iconPath = Path.Combine(Application.StartupPath, "Icons", "Vitros350.ico");
             notifyIcon1.Icon = new Icon(iconPath); // Set your icon here
-            notifyIcon1.Text = "Vitros350"; 
+            notifyIcon1.Text = "Vitros350";
             notifyIcon1.MouseDoubleClick += notifyIcon1_MouseDoubleClick;
         }
 
-        private void loadConfigSettings()
+
+        private void saveToSettings()
         {
-            
-            if (File.Exists(ConfigPath))
-            {
-
-                try
-                {
-                    
-                    config = userConfig.loadConfigSettings();
-
-                    //Server Settings
-                    txtServerIp.Text = config.ServerIpAddress;
-                    txtServerPort.Text = config.ServerPort;
-
-
-                    //Database Settings
-                    txtDatabaseName.Text = config.DatabaseName;
-                    txtDatabasePass.Text = config.Password;
-                    txtDatabasePort.Text = config.DatabasePort; 
-                    txtDatabaseServer.Text = config.DatabaseServer;
-                    txtDatabaseUsername.Text = config.Username;
-
-                    //Machine Settings
-                    txtMachineName.Text = config.MachineName;
-                    cboComPort.Text = config.MachinePort;
-                    txtMachineSerialNo.Text = config.SerialNumber;
-                    txtMachineSection.Text = config.MachineSection;
-                    txtMachineLocation.Text = config.MachineLocation;
-
-
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading configuration: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else {
-                return;
-            }
-            return;
-        }
-
-        private void saveToSettings() {
 
             if (File.Exists(ConfigPath))
             {
@@ -107,7 +71,9 @@ namespace Vitros350
                     MachinePort = cboComPort.Text,
                     SerialNumber = txtMachineSerialNo.Text,
                     MachineSection = txtMachineSection.Text,
-                    MachineLocation = txtMachineLocation.Text
+                    MachineLocation = txtMachineLocation.Text,
+
+                    EnableTwoWayProcess = chkEnableTwoWayProcess.Checked
                 };
                 try
                 {
@@ -131,10 +97,49 @@ namespace Vitros350
 
         private void loadAllSettings()
         {
-            loadConfigSettings();
-        }
+            if (File.Exists(ConfigPath))
+            {
 
-        private SerialPort _serialPort = new SerialPort();
+                try
+                {
+
+                    config = userConfig.loadConfigSettings();
+
+                    //Server Settings
+                    txtServerIp.Text = config.ServerIpAddress;
+                    txtServerPort.Text = config.ServerPort;
+
+
+                    //Database Settings
+                    txtDatabaseName.Text = config.DatabaseName;
+                    txtDatabasePass.Text = config.Password;
+                    txtDatabasePort.Text = config.DatabasePort;
+                    txtDatabaseServer.Text = config.DatabaseServer;
+                    txtDatabaseUsername.Text = config.Username;
+
+                    //Machine Settings
+                    txtMachineName.Text = config.MachineName;
+                    cboComPort.Text = config.MachinePort;
+                    txtMachineSerialNo.Text = config.SerialNumber;
+                    txtMachineSection.Text = config.MachineSection;
+                    txtMachineLocation.Text = config.MachineLocation;
+
+                    chkEnableTwoWayProcess.Checked = chkEnableTwoWayProcess.Enabled && config.EnableTwoWayProcess;
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading configuration: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                return;
+            }
+            return;
+        }
 
         private void InitiliazeSerialPort()
         {
@@ -142,7 +147,7 @@ namespace Vitros350
             {
                 if (!_serialPort.IsOpen)
                 {
-                    _serialPort.PortName = config.MachinePort; 
+                    _serialPort.PortName = config.MachinePort;
                     _serialPort.BaudRate = 9600;
                     _serialPort.DataBits = 8;
                     _serialPort.Parity = Parity.None;
@@ -192,15 +197,9 @@ namespace Vitros350
                 .Replace("\n", "<LF>");
         }
 
-
-
-        private List<byte> _incomingBuffer = new List<byte>();
-        private List<string> _currentSessionFrames = new List<string>();
-
-        
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
-            
+
             SerialPort sp = (sender as SerialPort);
             if (sp == null || !sp.IsOpen) return;
 
@@ -221,7 +220,7 @@ namespace Vitros350
                     {
 
 
-                       
+
                         _currentSessionFrames.Clear();
                         _incomingBuffer.Clear();
                         sp.Write(new byte[] { 0x06 }, 0, 1); // Send ACK in response to ENQ
@@ -280,13 +279,13 @@ namespace Vitros350
                         this.Invoke((MethodInvoker)delegate
                         {
                             rTextLogs.AppendText($"******************************End-of-Communication*******************************\r\n");
-                           
+
                         });
                         continue;
                     }
                 }
             }
-            
+
             catch (Exception ex)
             {
                 Console.WriteLine($"Error reading serial data: {ex.Message}");
@@ -306,22 +305,22 @@ namespace Vitros350
 
                 string[] records = cleanText.Split('\r');
 
-               
+
                 foreach (string record in records)
                 {
                     if (string.IsNullOrWhiteSpace(record)) continue;
 
-                    ParseASTMRecord(record);
+                    ProcessASTMRecord(record);
                 }
             }
         }
 
-        private PatientInfoConfiguration PatientInfo = new PatientInfoConfiguration();
-        private List<OrderInfoConfiguration> OrderInfo = new List<OrderInfoConfiguration>();
 
-        private void ParseASTMRecord(string record)
+        private void ProcessASTMRecord(string record)
         {
-            Debug.WriteLine($"Processing record: {record}");
+
+            ProcessOrderRecords processOrderRecords = new ProcessOrderRecords(OrderInfo, PatientInfo, config);
+
             if (string.IsNullOrWhiteSpace(record)) return;
 
             string[] fields = record.Trim().Split('|');
@@ -336,190 +335,31 @@ namespace Vitros350
             {
                 case "H":
 
-                    ProcessHeaderRecord(fields);
+                    processOrderRecords.ProcessHeaderRecord(fields);
                     break;
                 case "P":
-                    ProcessPatientRecord(fields);
+
+                    processOrderRecords.ProcessPatientRecord(fields);
                     break;
                 case "O":
-                    ProcessOrderRecord(fields);
+                    processOrderRecords.ProcessOrderRecord(fields);
                     break;
                 case "R":
-                    ProcessResultRecord(fields);
+                    processOrderRecords.ProcessResultRecord(fields);
                     break;
                 case "C":
-                    //ProcessCommentRecord(fields);
                     break;
                 case "L":
-                    //ProcessCommentRecord(fields);
+                    processOrderRecords.InsertIntoDatabase();
 
-                    //InsertIntoDatabase(PatientInfo, OrderInfo);
+                    PatientInfo = new PatientInfoConfiguration();
+                    OrderInfo = new List<OrderInfoConfiguration>();
+
                     break;
                 default:
                     Console.WriteLine($"Unknown record type: {recordType}");
                     break;
             }
-        }
-
-        private void ProcessHeaderRecord(string[] fields)
-        {
-            //if (fields.Length < 2) return;
-            //string headerInfo = fields[1];
-            //Debug.WriteLine($"Header Info: {headerInfo}");
-        }
-
-        private void ProcessPatientRecord(string[] fields)
-        {
-            
-            PatientInfo.PatientID = fields.Length > 2 ? fields[2] : string.Empty;
-
-            string rawPatientName = fields.Length > 5 ? fields[5] : string.Empty;
-
-            string[] nameParts = rawPatientName.Split('^');
-
-            string LastName = nameParts.Length > 0 ? nameParts[0] : string.Empty;
-            string FirstName = nameParts.Length > 1 ? nameParts[1] : string.Empty;
-            string MiddleInitial = nameParts.Length > 2 ? nameParts[2] : string.Empty;
-
-
-            PatientInfo.PatientName = $"{LastName}, {FirstName} {MiddleInitial}".Trim();
-            PatientInfo.PatientSex = fields.Length > 8 ? fields[8] : string.Empty;
-
-
-
-            PatientInfo.PatientAddress = "";
-            PatientInfo.DateOfBirth = fields.Length > 7 && DateTime.TryParseExact(fields[7], "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime dob) ? dob : DateTime.MinValue;
-
-        }
-
-        private void ProcessOrderRecord(string[] fields)
-        {
-
-            string rawSampleID = fields.Length > 2 ? fields[2] : string.Empty;
-            string[] sampleIdParts = rawSampleID.Split('^');
-            string SampleID = sampleIdParts.Length > 0 ? sampleIdParts[0] : string.Empty;
-            List<string> channelCodes = new List<string>();
-
-
-            OrderInfoConfiguration orderDetails = new OrderInfoConfiguration();
-
-
-            PatientInfo.SampleID = SampleID;
-
-            string fieldDetails = fields[4];
-            string marker = "1.0+";
-            int markerIndex = fieldDetails.IndexOf(marker);
-
-            if (markerIndex != -1)
-            {
-
-                string channelsChunk = fieldDetails.Substring(markerIndex + marker.Length);
-
-
-                char[] delimiters = new char[] { '+', '\\' };
-                string[] tokens = channelsChunk.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-
-                channelCodes = tokens.Where(t => t != "1").ToList();
-
-
-            }
-
-            foreach (string channel in channelCodes) {
-
-                using (MySqlConnection conn = new MySqlConnection(config.DatabaseConnectionString))
-                {
-                    conn.Open();
-
-                    MySqlCommand cmd = new MySqlCommand
-                    {
-                        Connection = conn,
-                        CommandText = "SELECT specimen,test_code,his_code,his_field,si_unit,conventional_unit,section,test_name AS sub_section,test_group,instrument,order_no " +
-                        "FROM specimen WHERE channel =@ChannelCode AND `status` = 'Enable'",
-                        CommandType = CommandType.Text
-                    };
-
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("@ChannelCode", channel);
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader()) 
-                    { 
-                        while (reader.Read())
-                        {
-                            string specimen = reader["specimen"].ToString();
-                            string testCode = reader["test_code"].ToString();
-                            string hisCode = reader["his_code"].ToString();
-                            string hisField = reader["his_field"].ToString();
-                            string siUnit = reader["si_unit"].ToString();
-                            string conventionalUnit = reader["conventional_unit"].ToString();
-                            string section = reader["section"].ToString();
-                            string subSection = reader["sub_section"].ToString();
-                            string testGroup = reader["test_group"].ToString();
-                            string instrument = reader["instrument"].ToString();
-                            int orderNo = Convert.ToInt32(reader["order_no"]);
-
-
-                            orderDetails = new OrderInfoConfiguration
-                            {
-                                SampleID = SampleID,
-                                ChannelCode = channel,
-                                SpecimenDate = fields.Length > 7 && DateTime.TryParseExact(fields[7], "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out DateTime specimenDateTime) ? specimenDateTime : DateTime.MinValue,
-                                OrderSection = section,
-                                OrderSubSection = subSection,
-                                OrderName = specimen,
-                                MachineName = instrument,
-                                OrderType = "Out Patient",
-                                PatientID = PatientInfo.PatientID,
-                                PatientName = PatientInfo.PatientName,
-                                PatientSex = PatientInfo.PatientSex,
-                                PatientBday = PatientInfo.DateOfBirth,
-                                OrderNo = orderNo
-                            };
-
-                            OrderInfo.Add(orderDetails);
-
-
-                        }
-
-                    };
-
-
-
-                }
-                
-
-            }
-
-
-
-
-        }
-
-        private void ProcessResultRecord(string[] fields)
-        {
-            string rawChannelCodeValue = fields.Length > 2 ? fields[2] : string.Empty;
-            string marker = "1.0+";
-            int markerIndex = rawChannelCodeValue.IndexOf(marker);
-            string code = String.Empty;
-            string resultValue = String.Empty;
-
-            if (markerIndex != -1)
-            {
-
-                string channelChunk = rawChannelCodeValue.Substring(markerIndex + marker.Length).Trim();
-
-                string[] channelPart = channelChunk.Split('+');
-
-                 code = channelPart.Length > 0 ? channelPart[0] : string.Empty;
-            }
-
-             resultValue = fields.Length > 3 ? fields[3] : string.Empty;
-
-            OrderInfoConfiguration matchingConfig = OrderInfo
-            .FirstOrDefault(config => config.ChannelCode == code);
-
-            matchingConfig.OrderValue = resultValue ?? "";
-
-
         }
 
 

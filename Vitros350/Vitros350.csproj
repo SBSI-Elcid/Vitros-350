@@ -81,8 +81,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\DatabaseCrudOperations.cs" />
     <Compile Include="Classes\OrderInfoConfiguration.cs" />
     <Compile Include="Classes\PatientInfoConfiguration.cs" />
+    <Compile Include="Classes\ProcessOrderRecords.cs" />
     <Compile Include="Classes\ResultConfiguration.cs" />
     <Compile Include="Classes\UserConfiguration.cs" />
     <Compile Include="frmMain.cs">
