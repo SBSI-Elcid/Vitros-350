@@ -16,8 +16,11 @@ namespace Vitros350.Classes
         public string OrderName { get; set; }
         public string MachineName { get; set; }
         public string OrderType { get; set; }
+        public string OrderTestGroup { get; set; }
         public int OrderNo { get; set; }
         public string OrderValue { get; set; }
+        public string OrderTestCode { get; set; }
+        public string OrderHisCode { get; set; }
 
 
 

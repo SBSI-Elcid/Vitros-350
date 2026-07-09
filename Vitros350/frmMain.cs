@@ -42,7 +42,7 @@ namespace Vitros350
             lblVersion.Text = $"Version {FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion}";
 
             string iconPath = Path.Combine(Application.StartupPath, "Icons", "Vitros350.ico");
-            notifyIcon1.Icon = new Icon(iconPath); // Set your icon here
+            notifyIcon1.Icon = new Icon(iconPath);
             notifyIcon1.Text = "Vitros350";
             notifyIcon1.MouseDoubleClick += notifyIcon1_MouseDoubleClick;
         }
@@ -81,7 +81,7 @@ namespace Vitros350
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error saving configuration: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ErrorLogger.LogError("Error in saving userConfiguration:", ex);
                 }
 
             }
@@ -131,7 +131,7 @@ namespace Vitros350
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error loading configuration: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ErrorLogger.LogError("Error in loading userConfiguration:", ex);
                 }
             }
             else
@@ -158,13 +158,13 @@ namespace Vitros350
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error initializing serial port: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorLogger.LogError("Error in initializing Serial Port:", ex);
             }
         }
 
         private string byteConverter(byte b)
         {
-            // Translate invisible ASTM control bytes into readable labels
+            // Translate ASTM bytes into labels
             switch (b)
             {
                 case 0x02: return "<STX>";
@@ -206,7 +206,6 @@ namespace Vitros350
             try
             {
 
-
                 int bytesToRead = sp.BytesToRead;
                 byte[] incomingData = new byte[bytesToRead];
 
@@ -218,8 +217,6 @@ namespace Vitros350
 
                     if (b == 0x05) // ENQ   
                     {
-
-
 
                         _currentSessionFrames.Clear();
                         _incomingBuffer.Clear();
@@ -236,14 +233,14 @@ namespace Vitros350
                         continue;
                     }
 
-                    if (b == 0x02) // (STX)
+                    //if (b == 0x02) // (STX)
 
-                    {
-                        //_incomingBuffer.Clear();
+                    //{
+                    //    //_incomingBuffer.Clear();
 
-                        continue;
+                    //    continue;
 
-                    }
+                    //}
                     _incomingBuffer.Add(b);
 
                     if (b == 0x0A) // LF
@@ -288,31 +285,63 @@ namespace Vitros350
 
             catch (Exception ex)
             {
-                Console.WriteLine($"Error reading serial data: {ex.Message}");
+                ErrorLogger.LogError("Error in reading Serial Data:", ex);
             }
+        }
+
+        public string cleanedText(string RawText) {
+
+            string cleanText = string.Empty;
+
+            try
+            {
+                
+                 cleanText = RawText.Trim('\u0002', '\u0003', '\u0017', '\r', '\n');
+
+                if (cleanText.Length > 0 && char.IsDigit(cleanText[0]))
+                {
+                    cleanText = cleanText.Substring(1);
+                }
+
+            }
+            catch (Exception ex) {
+                ErrorLogger.LogError("Error in Cleaning Text:", ex);
+            }
+
+            return cleanText;
+
+
         }
 
         private void ProcessASTMFrame(List<string> sessionFrames)
         {
-            foreach (string frameText in sessionFrames)
+            try 
             {
-
-                if (string.IsNullOrEmpty(frameText) || frameText.Length <= 5) continue;
-
-                // --- CLEANING DIRECTLY AS A STRING ---
-                int payloadLength = frameText.Length - 5;
-                string cleanText = frameText;
-
-                string[] records = cleanText.Split('\r');
-
-
-                foreach (string record in records)
+                foreach (string frameText in sessionFrames)
                 {
-                    if (string.IsNullOrWhiteSpace(record)) continue;
 
-                    ProcessASTMRecord(record);
+                    if (string.IsNullOrEmpty(frameText) || frameText.Length <= 5) continue;
+
+                    // --- CLEANING DIRECTLY AS A STRING ---
+                    int payloadLength = frameText.Length - 5;
+                    string cleanText = cleanedText(frameText);
+
+                    string[] records = cleanText.Split('\r');
+
+
+                    foreach (string record in records)
+                    {
+                        if (string.IsNullOrWhiteSpace(record)) continue;
+
+                        ProcessASTMRecord(record);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogError("Error in ProcessASTM Frame/Record:", ex);
+            }
+
         }
 
 

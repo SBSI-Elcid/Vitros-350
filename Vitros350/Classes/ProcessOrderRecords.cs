@@ -1,10 +1,12 @@
-﻿using MySqlConnector;
+﻿using Microsoft.Extensions.Logging;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Vitros350.Classes
 {
@@ -57,9 +59,6 @@ namespace Vitros350.Classes
             string[] sampleIdParts = rawSampleID.Split('^');
             string SampleID = sampleIdParts.Length > 0 ? sampleIdParts[0] : string.Empty;
             List<string> channelCodes = new List<string>();
-
-
-
 
 
             _patientInfo.SampleID = SampleID;
@@ -134,8 +133,10 @@ namespace Vitros350.Classes
                                 PatientID = _patientInfo.PatientID,
                                 PatientName = _patientInfo.PatientName,
                                 PatientSex = _patientInfo.PatientSex,
+                                OrderTestGroup = testGroup,
                                 PatientBday = _patientInfo.DateOfBirth,
-                                OrderNo = orderNo
+                                OrderNo = orderNo,
+                                OrderTestCode = testCode
                             };
 
                             _orderInfo.Add(orderDetails);
@@ -171,7 +172,10 @@ namespace Vitros350.Classes
             OrderInfoConfiguration matchingConfig = _orderInfo
             .FirstOrDefault(config => config.ChannelCode == code);
 
-            matchingConfig.OrderValue = resultValue ?? "";
+            if (matchingConfig != null)
+            {
+                matchingConfig.OrderValue = resultValue ?? "";
+            }
 
 
         }
@@ -181,8 +185,30 @@ namespace Vitros350.Classes
 
             DatabaseCrudOperations dbOperations = new DatabaseCrudOperations(_orderInfo, _patientInfo, _config);
 
-            dbOperations.CreateTmpworklistInfo();
-            dbOperations.CreateSpecimenTrackingInfo();
+            using (MySqlConnection conn = new MySqlConnection(_config.DatabaseConnectionString)) 
+            { 
+                conn.Open();
+
+                using (MySqlTransaction databaseTransaction = conn.BeginTransaction())
+                {
+                    try 
+                    {
+                        dbOperations.CreateTmpworklistInfo(conn, databaseTransaction);
+                        dbOperations.CreateSpecimenTrackingInfo(conn, databaseTransaction);
+                        dbOperations.CreateResultInfo(conn, databaseTransaction);
+
+                        databaseTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        databaseTransaction.Rollback();
+                        ErrorLogger.LogError("An error occurred while inserting data into the database", ex);
+                    }
+                }
+
+            }
+
+                
 
         }
 

@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\DatabaseCrudOperations.cs" />
+    <Compile Include="Classes\ErrorLogger.cs" />
     <Compile Include="Classes\OrderInfoConfiguration.cs" />
     <Compile Include="Classes\PatientInfoConfiguration.cs" />
     <Compile Include="Classes\ProcessOrderRecords.cs" />
