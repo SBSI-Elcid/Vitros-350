@@ -143,8 +143,6 @@ namespace Vitros350.Classes
                         }
 
                     }
-                    ;
-
                 }
             }
         }
@@ -176,8 +174,6 @@ namespace Vitros350.Classes
             {
                 matchingConfig.OrderValue = resultValue ?? "";
             }
-
-
         }
 
         public void InsertIntoDatabase()
@@ -205,13 +201,7 @@ namespace Vitros350.Classes
                         ErrorLogger.LogError("An error occurred while inserting data into the database", ex);
                     }
                 }
-
             }
-
-                
-
         }
-
-
     }
 }

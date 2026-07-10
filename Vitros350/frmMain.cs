@@ -141,6 +141,25 @@ namespace Vitros350
             return;
         }
 
+        public void addToTraceComm(string Message) 
+        {
+            string FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TraceComm.txt");
+
+            try
+            {
+                // AppendText handles both creating a new file and appending to an existing one
+                using (StreamWriter sw = File.AppendText(FilePath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Logging failed: {ex.Message}");
+            }
+
+        }
+
         private void InitiliazeSerialPort()
         {
             try
@@ -230,6 +249,8 @@ namespace Vitros350
                             rTextLogs.AppendText($"{DateTime.Now} [Host]: {byteConverter(0x06)} \r\n");
                         });
 
+                        addToTraceComm($"{DateTime.Now} [Machine]: {byteConverter(b)}\r\n");
+
                         continue;
                     }
 
@@ -262,6 +283,8 @@ namespace Vitros350
                                 rTextLogs.AppendText($"{DateTime.Now} [Machine]: {logsData(frameText)} \r\n");
                                 rTextLogs.AppendText($"{DateTime.Now} [Host]: {byteConverter(0x06)} \r\n");
                             });
+
+                            addToTraceComm($"{DateTime.Now} [Machine]: {logsData(frameText)}\r\n");
                         }
                     }
 
@@ -278,6 +301,8 @@ namespace Vitros350
                             rTextLogs.AppendText($"******************************End-of-Communication*******************************\r\n");
 
                         });
+
+                        addToTraceComm($"{DateTime.Now} [Machine]: {byteConverter(0x04)}\r\n");
                         continue;
                     }
                 }

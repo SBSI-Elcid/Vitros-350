@@ -25,7 +25,7 @@ namespace Vitros350.Classes
 
         public void CreateTmpworklistInfo(MySqlConnection conn, MySqlTransaction transaction)
         {
-            bool isRecordExists = false;
+           
 
             List<OrderInfoConfiguration> tmpWorklist = _orderInfo.GroupBy(o => new { o.OrderSection, o.OrderSubSection })
                 .Select(g => g.First())
@@ -33,11 +33,12 @@ namespace Vitros350.Classes
 
             foreach (var order in tmpWorklist)
             {
-
+                bool isRecordExists = false;
 
                 using (MySqlCommand cmd = new MySqlCommand
                 {
                     Connection = conn,
+                    Transaction = transaction,
                     CommandText = "SELECT 1 FROM tmpworklist WHERE main_id = @SampleID AND testtype = @Section AND sub_section = @SubSection",
                     CommandType = CommandType.Text
 
@@ -132,7 +133,7 @@ namespace Vitros350.Classes
 
         public void CreateSpecimenTrackingInfo(MySqlConnection conn, MySqlTransaction transaction)
         {
-            bool isRecordExists = false;
+          
 
             List<OrderInfoConfiguration> tmpWorklist = _orderInfo.GroupBy(o => new { o.OrderSection, o.OrderSubSection })
                 .Select(g => g.First())
@@ -140,9 +141,13 @@ namespace Vitros350.Classes
 
             foreach (var order in tmpWorklist)
             {
+
+                bool isRecordExists = false;
+
                 using (MySqlCommand cmd = new MySqlCommand
                 {
                     Connection = conn,
+                    Transaction = transaction,
                     CommandText = "SELECT 1 FROM specimen_tracking WHERE sample_id = @SampleID AND section = @Section AND sub_section = @SubSection",
                     CommandType = CommandType.Text
 
@@ -194,14 +199,17 @@ namespace Vitros350.Classes
         public void CreateResultInfo(MySqlConnection conn, MySqlTransaction transaction)
         {
 
-            bool isRecordExists = false;
-            string SQL = String.Empty;
+
 
             foreach (var order in _orderInfo)
             {
+                bool isRecordExists = false;
+                string SQL = String.Empty;
+
                 using (MySqlCommand cmd = new MySqlCommand
                 {
                     Connection = conn,
+                    Transaction = transaction,
                     CommandText = "SELECT 1 FROM tmpresult WHERE sample_id = @SampleID AND section = @Section AND sub_section = @SubSection AND test_code = @TestCode",
                     CommandType = CommandType.Text
                 })
